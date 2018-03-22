@@ -7,6 +7,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,17 +21,20 @@ public class GridActivityViewModel extends BaseObservable {
     public static final String TAG = "moltag";
     private boolean progressVisibility;
     private boolean recyclerViewVisibility;
+    public ArrayList<Recipe> recipes = new ArrayList<>();
 
     public GridActivityViewModel() {
-        EdamamController edamamController = new EdamamController();
-        edamamController.start("chicken", new Callback() {
+        final EdamamController edamamController = new EdamamController();
+        edamamController.start("chicken", new Callback<EdamamReply>() {
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(Call<EdamamReply> call, Response<EdamamReply> response) {
+                Log.d(TAG, "onResponse: " + response);
+                recipes = edamamController.processResults(response);
                 Log.d(TAG, "onResponse: ");
             }
 
             @Override
-            public void onFailure(Call call, Throwable t) {
+            public void onFailure(Call<EdamamReply> call, Throwable t) {
                 Log.d(TAG, "onFailure: ");
             }
         });

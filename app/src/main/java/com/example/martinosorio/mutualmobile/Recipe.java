@@ -8,6 +8,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Recipe {
 
+    public Recipe(String name, String imageUrl, String sourceUrl, String ingredients) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.sourceUrl = sourceUrl;
+        this.ingredients = ingredients.replaceAll("\\[","").replaceAll("\\]","").replaceAll("\\\\","").split("\",\"");
+    }
+
     @SerializedName("label")
     private String name;
 
@@ -17,5 +24,5 @@ public class Recipe {
     @SerializedName("url")
     private String sourceUrl;
 
-    //private String[] ingredients;
+    private String[] ingredients;
 }
